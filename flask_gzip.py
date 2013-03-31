@@ -16,8 +16,8 @@ class Gzip(object):
         if 'gzip' not in accept_encoding.lower():
             return response
 
-        if response.status_code not in xrange(200,300) or
-           len(response.data) < self.minimum_size or
+        if response.status_code not in xrange(200,300) or \
+           len(response.data) < self.minimum_size or \
            'Content-Encoding' in response.headers:
             return response
 
