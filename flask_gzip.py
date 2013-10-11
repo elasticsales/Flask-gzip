@@ -15,10 +15,13 @@ class Gzip(object):
 
         if response.status_code < 200 or \
            response.status_code >= 300 or \
-           len(response.data) < self.minimum_size or \
+           response.content_length < self.minimum_size or \
            'gzip' not in accept_encoding.lower() or \
            'Content-Encoding' in response.headers:
             return response
+
+        #fixed the werkzeug new version > 0.9
+        response.direct_passthrough = False
 
         gzip_buffer = StringIO.StringIO()
         gzip_file = gzip.GzipFile(mode='wb', compresslevel=self.compress_level, fileobj=gzip_buffer)
