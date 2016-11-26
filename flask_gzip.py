@@ -11,6 +11,9 @@ class Gzip(object):
         self.app.after_request(self.after_request)
 
     def after_request(self, response):
+        if response.direct_passthrough == True:
+           response.direct_passthrough = False 
+
         accept_encoding = request.headers.get('Accept-Encoding', '')
 
         if response.status_code < 200 or \
