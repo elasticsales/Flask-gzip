@@ -1,7 +1,15 @@
 import gzip
-import StringIO
 from flask import request
 
+try:
+    # PY 2
+    import StringIO
+    gzip_buffer = StringIO.StringIO()
+except ImportError:
+    # PY 3
+    import io as StringIO
+    gzip_buffer = StringIO.BytesIO()
+    
 
 class Gzip(object):
     def __init__(self, app, compress_level=6, minimum_size=500):
