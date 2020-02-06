@@ -6,10 +6,14 @@ from flask import request
 
 class Gzip(object):
     def __init__(self, app, compress_level=6, minimum_size=500):
-        self.app = app
         self.compress_level = compress_level
         self.minimum_size = minimum_size
-        self.app.after_request(self.after_request)
+
+        if app is not None:
+            self.init_app(app)
+    
+    def init_app(self, app):
+        app.after_request(self.after_request)
 
     def after_request(self, response):
         accept_encoding = request.headers.get('Accept-Encoding', '')
